@@ -1,4 +1,0 @@
-fastapi[standard]
-mistralai
-requests
-python-dotenv
