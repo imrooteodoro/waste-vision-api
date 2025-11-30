@@ -1,1 +1,1 @@
-web: fastapi run src/main.py --port 8000 --host 0.0.0.0
+web:uv run fastapi run src/main.py --port 8000 --host 0.0.0.0
