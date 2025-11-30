@@ -15,7 +15,7 @@ async def image_inference(file: UploadFile= File(...)):
         )
     file_bytes = await file.read()
 
-    response = inference(image=file_bytes)
+    response = await inference(image=file_bytes)
 
     return response
 
