@@ -1,15 +1,18 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, ChangeEvent, FormEvent } from 'react';
 
 export default function FormPage() {
-  const [selectedImage, setSelectedImage] = useState(null);
-  const [preview, setPreview] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [result, setResult] = useState(null);
+  // Definindo tipos para os estados (Generics)
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const [preview, setPreview] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [result, setResult] = useState<string | null>(null);
 
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
+  // 1. Tipagem correta para evento de Input de arquivo
+  const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
+    // O 'files' pode ser null, então usamos ?.
+    const file = e.target.files?.[0]; 
     if (file) {
       setSelectedImage(file);
       setPreview(URL.createObjectURL(file));
@@ -23,7 +26,8 @@ export default function FormPage() {
     setResult(null);
   };
 
-  const handleSubmit = async (e) => {
+  // 2. Tipagem correta para envio de formulário
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     if (!selectedImage) return;
 
@@ -45,10 +49,12 @@ export default function FormPage() {
       }
 
       const data = await response.json();
-    //   alert("Response Data:" + JSON.stringify(data));
       
-      if (data.prediction) {
-        setResult(data.prediction);
+      // Verificação segura
+      const predictionValue = data.prediction || data.predict;
+
+      if (predictionValue) {
+        setResult(predictionValue);
       } else {
         alert("Unexpected response format");
       }
@@ -119,7 +125,7 @@ export default function FormPage() {
             )}
           </div>
 
-          {/* Resultado da Predição (Aparece só quando existe resultado) */}
+          {/* Resultado da Predição */}
           {result && (
             <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-4 animate-fade-in text-center">
               <p className="text-sm text-emerald-600 font-semibold uppercase tracking-wider mb-1">Result</p>
