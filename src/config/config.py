@@ -15,6 +15,6 @@ for variable in variables:
         raise ValueError(f"Environment variable {variable} is not set")
     
 headers = {"x-api-key": variables["api_key"]}
-data = {"model": variables["model"], "imgsz": 1200, "conf": 0.25, "iou":0.45}
+data = {"model": variables["model"], "imgsz": 640, "conf": 0.25, "iou":0.45}
 url = variables["url"]
 
